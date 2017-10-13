@@ -126,10 +126,10 @@ class Dropdown extends Component {
   }
 
   render () {
-    const { baseClassName, className } = this.props
+    const { baseClassName, className, arrowOpen, arrowClosed } = this.props
 
     const disabledClass = this.props.disabled ? 'Dropdown-disabled' : ''
-    const valueClass = `${baseClassName}-${this.state.selected.value.length ? 'selected' : 'placeholder'}`;
+    const valueClass = `${baseClassName}-${typeof this.state.selected.value !== 'undefined' && !this.state.selected.value.length ? 'placeholder' : 'selected'}`;
     const placeHolderValue = typeof this.state.selected === 'string' ? this.state.selected : this.state.selected.label
     let value = (<div className={valueClass}>{placeHolderValue}</div>)
     let menu = this.state.isOpen ? <div className={`${baseClassName}-menu`}>{this.buildMenu()}</div> : null
@@ -144,7 +144,13 @@ class Dropdown extends Component {
       <div className={dropdownClass}>
         <div className={`${baseClassName}-control ${disabledClass}`} onMouseDown={this.handleMouseDown.bind(this)} onTouchEnd={this.handleMouseDown.bind(this)}>
           {value}
-          <span className={`${baseClassName}-arrow`} />
+          <div className={`${baseClassName}-arrow-wrapper`}>
+            { arrowOpen && arrowClosed ?
+              this.state.isOpen ? arrowOpen : arrowClosed
+              :
+              <span className={`${baseClassName}-arrow`} />
+            }
+          </div>
         </div>
         {menu}
       </div>

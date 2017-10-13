@@ -187,11 +187,13 @@ var Dropdown = function (_Component) {
 
       var _props2 = this.props,
           baseClassName = _props2.baseClassName,
-          className = _props2.className;
+          className = _props2.className,
+          arrowOpen = _props2.arrowOpen,
+          arrowClosed = _props2.arrowClosed;
 
 
       var disabledClass = this.props.disabled ? 'Dropdown-disabled' : '';
-      var valueClass = baseClassName + '-' + (this.state.selected.value.length ? 'selected' : 'placeholder');
+      var valueClass = baseClassName + '-' + (typeof this.state.selected.value !== 'undefined' && !this.state.selected.value.length ? 'placeholder' : 'selected');
       var placeHolderValue = typeof this.state.selected === 'string' ? this.state.selected : this.state.selected.label;
       var value = _react2.default.createElement(
         'div',
@@ -213,7 +215,11 @@ var Dropdown = function (_Component) {
           'div',
           { className: baseClassName + '-control ' + disabledClass, onMouseDown: this.handleMouseDown.bind(this), onTouchEnd: this.handleMouseDown.bind(this) },
           value,
-          _react2.default.createElement('span', { className: baseClassName + '-arrow' })
+          _react2.default.createElement(
+            'div',
+            { className: baseClassName + '-arrow-wrapper' },
+            arrowOpen && arrowClosed ? this.state.isOpen ? arrowOpen : arrowClosed : _react2.default.createElement('span', { className: baseClassName + '-arrow' })
+          )
         ),
         menu
       );
